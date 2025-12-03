@@ -28,7 +28,7 @@ let ProfilesController = class ProfilesController {
         return [{ name: name }];
     }
     findOne(id) {
-        return `This action returns a #${id} profile`;
+        return this.profilesService.findOne(id);
     }
     create(createProfileDto) {
         return {

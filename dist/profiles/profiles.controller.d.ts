@@ -12,7 +12,12 @@ export declare class ProfilesController {
     findOneProfile(name: string): {
         name: string;
     }[];
-    findOne(id: string): string;
+    findOne(id: string): {
+        id: `${string}-${string}-${string}-${string}-${string}`;
+        name: string;
+        age: number;
+        description: string;
+    } | undefined;
     create(createProfileDto: CreateProfileDto): {
         name: string;
         age: number;

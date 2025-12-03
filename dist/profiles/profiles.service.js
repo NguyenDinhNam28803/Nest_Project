@@ -27,6 +27,9 @@ let ProfilesService = class ProfilesService {
     findAll() {
         return this.profiles;
     }
+    findOne(id) {
+        return this.profiles.find(profile => profile.id === id);
+    }
 };
 exports.ProfilesService = ProfilesService;
 exports.ProfilesService = ProfilesService = __decorate([

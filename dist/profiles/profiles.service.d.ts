@@ -6,4 +6,10 @@ export declare class ProfilesService {
         age: number;
         description: string;
     }[];
+    findOne(id: string): {
+        id: `${string}-${string}-${string}-${string}-${string}`;
+        name: string;
+        age: number;
+        description: string;
+    } | undefined;
 }

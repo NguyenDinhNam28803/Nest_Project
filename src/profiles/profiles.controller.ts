@@ -4,7 +4,7 @@ import { ProfilesService } from './profiles.service';
 @Controller('profiles')
 export class ProfilesController {
 
-    constructor(private readonly profilesService: ProfilesService) {}
+    constructor(private readonly profilesService: ProfilesService) { }
 
     // Get /profiles
     @Get()
@@ -21,7 +21,7 @@ export class ProfilesController {
     // Get /profiles/:id
     @Get(':id')
     findOne(@Param('id') id: string) {
-        return `This action returns a #${id} profile`;
+        return this.profilesService.findOne(id);
     }
 
     // Post /profiles
