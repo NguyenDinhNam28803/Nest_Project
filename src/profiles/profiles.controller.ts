@@ -1,6 +1,8 @@
-import { Controller, Get, Param, Query, Post, Put, Body, Delete } from '@nestjs/common';
+import { Controller, Get, Param, Query, Post, Put, Body, Delete, UseGuards } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-prodiles.dto';
 import { ProfilesService } from './profiles.service';
+import { ProfilesGuard } from './profiles.guard';
+
 @Controller('profiles')
 export class ProfilesController {
 
@@ -20,6 +22,7 @@ export class ProfilesController {
 
     // Get /profiles/:id
     @Get(':id')
+    @UseGuards(ProfilesGuard)
     findOne(@Param('id') id: string) {
         return this.profilesService.findOne(id);
     }
