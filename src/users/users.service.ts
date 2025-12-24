@@ -1,23 +1,45 @@
-import { Injectable } from '@nestjs/common';
-import { NotFoundException } from '@nestjs/common';
-import { User } from './types/User';
+import { Injectable, NotFoundException } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
+import { User, UserDocument } from './schemas/user.schema';
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com' },
-    ];
+    constructor(
+        @InjectModel(User.name) private userModel: Model<UserDocument>,
+    ) {}
 
     async findAll(): Promise<User[]> {
-        return this.users;
+        return this.userModel.find().exec();
     }
 
-    async findOne(id: number): Promise<User> {
-        const user = this.users.find(u => u.id === id);
+    async findOne(id: string): Promise<User> {
+        const user = await this.userModel.findById(id).exec();
         if (!user) {
-            throw new NotFoundException('User không tồn tại');
+            throw new NotFoundException(`User with ID ${id} not found`);
         }
         return user;
+    }
+
+    async create(createUserDto: any): Promise<User> {
+        const createdUser = new this.userModel(createUserDto);
+        return createdUser.save();
+    }
+
+    async update(id: string, updateUserDto: any): Promise<User> {
+        const updatedUser = await this.userModel
+            .findByIdAndUpdate(id, updateUserDto, { new: true })
+            .exec();
+        if (!updatedUser) {
+            throw new NotFoundException(`User with ID ${id} not found`);
+        }
+        return updatedUser;
+    }
+
+    async remove(id: string): Promise<void> {
+        const result = await this.userModel.deleteOne({ _id: id }).exec();
+        if (result.deletedCount === 0) {
+            throw new NotFoundException(`User with ID ${id} not found`);
+        }
     }
 }
